@@ -1,0 +1,275 @@
+Sun Apr 18 13:33:51 1999  Sergio Gomez Bachiller  <sergio@perseo>
+
+	* acconfig.h: Eliminado semun
+
+	* qronosd.h:
+	Modificada la estructura conection para poder guardar el nombre del programa
+
+	* qronosd.c:
+	Correciones menores en el código y en la captura de errores.
+
+	* log.c: Corregida la ruta del fichero de registro
+
+	* auth.c: Pequeñas modificaciones en la estructura del código
+
+	* bbdd.c:
+	Extraido el código que se encargaba del fichero de configuración. Errores
+	menores corregidos.
+
+	* bbdd.h: Eliminación de la parte del fichero de configuración
+
+	* exec.c: Pequeños cambios en la estructura del código
+
+	* check.c:
+	División de bbdd.c, módulo encargado de leer el fichero de configuración
+	y establecer los permisos para la ejecución y la quota de tiempo.
+
+	* check.h: División del módulo bbdd.h, para check.c
+
+Wed Apr 14 05:28:29 1999  Sergio Gomez Bachiller  <sergio@perseo>
+
+	* configure, configure.in, po/cat-id-tbl.c, po/es.po, po/qronos.pot, qronos.c:
+	Version 0.8 released
+
+	* exec.c: Eliminada la función que desvinculaba al padre de la consola.
+	En la versión anterior se cambio la forma de instalar señales al estandar
+	POSIX.
+
+	* AUTHORS, acconfig.h, auth.h, bbdd.h, close.c, exec.c, exec.h, log.c, log.h, msg.c, msg.h, qronos.c, qronos.h, qronosd.c, qronosd.h, auth.c, bbdd.c, call.c:
+	Modificado el copyright a partir de la versión 0.8
+
+Tue Apr  6 02:19:56 1999  Sergio Gomez Bachiller  <sergio@perseo>
+
+	* po/qronos.pot, Makefile.am, Makefile.in, configure, po/es.po, Attic/config.guess, Attic/config.sub, acconfig.h, configure.in, po/cat-id-tbl.c:
+	Version 0.7
+
+	* bbdd.h:
+	Modificada la estructura conf. En el fichero de configuración ahora
+	se puede indicar si un programa debe ser interrumpido o no.
+
+	* msg.h: Corregida la ruta de los includes
+
+	* qronos.h:
+	Modificada la estructura program. Añadidos el nombre del usuario
+	y valor booleano que indica si el programa debe ser interrumpido
+	al final de la quota.
+
+	* msg.c:
+	Modificaciones en el (des)empaquetado debido a una modificación de la
+	estructura program.
+
+	* exec.c:
+	La señal de alarma para interrumpir el programa solo se instala
+	en caso de que así se lo haya especificado el servidor.
+
+	* auth.c: Corregida la ruta de los includes
+
+	* call.c, qronosd.c:
+	Adaptadas las funciones de comunicaciones al estandar POSIX
+
+	* bbdd.c: Las entradas caducadas del fichero de registro se eliminan.
+	En el caso de que un programa no deba ser matado, se detecta si se ha
+	pasado de quota para establecer cuando puede volver a ejecutar un
+	programa.
+
+	* qronos.c:
+	Se detecta el nombre del usuario para que pueda ser enviado al servidor.
+	Se detecta si qronos existe.
+	Modificada la salida de un mensaje de error.
+
+Mon Apr  5 23:40:39 1999  Sergio Gomez Bachiller  <sergio@perseo>
+
+	* qronos.h: Modificación de las rutas de los includes.
+
+	* Makefile.am: Añadido config.sub y config.guess
+
+	* po/es.po, po/qronos.pot: *** empty log message ***
+
+	* Attic/config.guess, Attic/config.sub, Makefile.in, configure, po/cat-id-tbl.c, po/es.po, po/qronos.pot:
+	Preparada versión 0.6
+
+	* acconfig.h: Soporte para semáforos en Solaris
+
+	* qronosd.h: Definición de macros para la manipulación de semáforos.
+
+Sun Apr  4 23:59:37 1999  Sergio Gomez Bachiller  <sergio@perseo>
+
+	* close.c: Corregidas las rutas de los includes.
+
+	* configure.in: Soporte para semáforos en Solaris
+
+	* qronosd.c:
+	Insertadas rutinas para la creación de un grupo de semáforos.
+
+	* exec.c: Corregida la ruta de los includes
+
+	* exec.h: Corregido la ruta de los includes
+
+	* AUTHORS: *** empty log message ***
+
+	* qronos.c:
+	Se detecta si el programa no tiene como euid a el uid de qronos.
+
+	* bbdd.c: El acceso a la bbdd se ha protegido por medio de semáforos
+
+	* call.c: Corregido un error leve de compilación por declaración
+	implicita (string.h añadido).
+
+	* qronosd.h:
+	Modificada la función server para que acepte el identificador de conexión.
+
+	* qronosd.c:
+	Corregidos errores leves de compilación. Corregido el momento en el
+	que se incrementa el identificador de conexión.
+
+	* qronos.c:
+	Añadido el caso AUTH_NO_MORE. Interceptadas las señales de interrupción.
+
+	* exec.c:
+	Desvinculado el padre con el terminal. Corregidas dos entradas de includes.
+
+	* bbdd.h, bbdd.c:
+	Modificada la estructura del módulo. Añadidos parse_entry y parse_conf.
+	Se han creado o modificado las estructuras entr y conf.
+
+	* auth.h, auth.c:
+	Error AUTH_NO_MORE añadido en caso de que ya se esté ejecutando una
+	copia del programa.
+
+	* bbdd.c, bbdd.h:
+	Acabada la funcion check_bbdd que mira en el registro si un fichero puede ser ejecutado
+
+Tue Mar 30 10:39:32 1999  Sergio Gomez Bachiller  <sergio@perseo>
+
+	* qronosd.h:
+	Corregido un error en los includes de que depende este archivo
+
+	* bbdd.c:
+	Finalizada la funcion parse_bbdd que lee el fichero de configuración
+
+Mon Mar 29 23:45:38 1999  Sergio Gomez Bachiller  <sergio@perseo>
+
+	* ChangeLog, Makefile.am, Makefile.in, acconfig.h, aclocal.m4, configure, configure.in, po/es.po, po/qronos.pot:
+	Actualizaciones del sistema automake/autoconf
+
+	* qronosd.c, qronosd.h: Version final de la funcion server
+
+	* msg.c: Se detecta si el paquete está en mal estado
+
+	* call.c: Corregido un error al enviar datos al servidor
+
+	* auth.h, auth.c: Detectado un nuevo caso de error
+
+	* qronos.h: *** empty log message ***
+
+	* qronos.c: Corregido un bug del gettext
+	Se ha modificado el paso de los parámetros a las funciones
+
+	* exec.c: Corregido el momento en el que se instala la alarma
+
+	* bbdd.c, bbdd.h: Modulo de lectura de la BBDD, version inicial
+
+	* log.h: Fichero de cabecera de log.c
+
+	* log.c: Fichero que crea un fichero de registro
+
+	* qronosd.h: Fichero de cabecera de qronosd.c
+
+	* qronosd.c: Versión inicial del demonio de qronos
+
+Mon Mar 29 21:34:51 1999  Sergio Gomez Bachiller  <sergio@perseo>
+
+	* log.h: Fichero de cabecera de log.c
+
+	* log.c: Fichero que crea un fichero de registro
+
+	* qronosd.h: Fichero de cabecera de qronosd.c
+
+	* qronosd.c: Versión inicial del demonio de qronos
+
+Sun Mar 28 20:05:37 1999  Sergio Gomez Bachiller  <sergio@perseo>
+
+	* qronos.c: Soporte para la funcion BSD rindex
+
+	* auth.h, exec.h, msg.h, qronos.h, auth.c, call.c, close.c, msg.c, acconfig.h, exec.c:
+	Breves modificaciones en el código para optimizar el uso de autoheader
+
+	* exec.c: *** empty log message ***
+
+Mon Mar 22 23:58:19 1999  Sergio Gomez Bachiller  <sergio@perseo>
+
+	* qronos.c, msg.c, exec.c, close.c, call.c, auth.c:
+	Indentados los códigos segun el estándar GNU
+
+Sun Mar  7 21:27:36 1999  Sergio Gomez Bachiller  <sergio@perseo>
+
+	* po/qronos.pot, po/es.po, po/cat-id-tbl.c, qronos.c, exec.c, configure.in, configure, NEWS, DESIGN, ChangeLog:
+	Correcciones menores a la version 0.5
+
+Sat Feb 20 02:21:38 1999  Sergio Gomez Bachiller  <sergio@perseo>
+
+	* NEWS, ChangeLog: *** empty log message ***
+
+	* po/ChangeLog: Versión 4.0
+
+	* po/qronos.pot, po/es.po, configure.in, configure:
+	Versión 4.0 Modificación por error en configure.in al nombar la versión del paquete
+
+	* intl/finddomain.c, intl/gettext.c, intl/gettext.h, intl/gettextP.h, intl/hash-string.h, intl/intl-compat.c, intl/l10nflist.c, intl/libgettext.h, intl/linux-msg.sed, intl/loadinfo.h, intl/loadmsgcat.c, intl/localealias.c, intl/po2tbl.sed.in, intl/textdomain.c, intl/xopen-msg.sed, po/Makefile.in.in, po/POTFILES.in, po/cat-id-tbl.c, po/es.po, po/qronos.pot, po/stamp-cat-id, intl/ChangeLog, intl/Makefile.in, intl/VERSION, intl/bindtextdom.c, intl/cat-compat.c, intl/dcgettext.c, intl/dgettext.c, intl/explodename.c, qronos.c, configure.in, configure, aclocal.m4, Makefile.in, ABOUT-NLS, Makefile.am:
+	Versión 0.4
+
+Thu Feb 18 23:52:34 1999  Sergio Gomez Bachiller  <sergio@perseo>
+
+	* qronos.h, msg.c, msg.h, qronos.c, exec.h, exec.c, configure.in, configure, close.c, call.c, auth.h, auth.c, NEWS, Makefile.in, Makefile.am, ChangeLog:
+	Versión 0.3
+
+Wed Feb 17 23:36:17 1999  Sergio Gomez Bachiller  <sergio@perseo>
+
+	* qronos.h, qronos.c, exec.h, exec.c, configure.in, configure, auth.h, NEWS, Makefile.in, DESIGN, ChangeLog, AUTHORS:
+	Versión 0.2
+
+Mon Feb 15 12:46:33 1999  Sergio Gomez Bachiller  <sergio@perseo>
+
+	* qronos.jpg, configure.in, configure, Makefile.am, ChangeLog:
+	qronos.jpg
+
+	* COPYING, ChangeLog, DESIGN, INSTALL, Makefile.am, Makefile.in, NEWS, README, close.c, configure, configure.in, exec.c, exec.h, install-sh, missing, mkinstalldirs, qronos.c, qronos.h, AUTHORS, aclocal.m4, auth.c, auth.h, call.c:
+	*** empty log message ***
+
+1999-03-28  Sergio Gomez Bachiller  <sergio@rabcee02.uco.es>
+
+	* Modificados los ficheros para que CVS informe de los cambios
+	  automáticamente
+	* Pequeñas variaciones para el uso de autoheader
+	* Variaciones para seguir el estándar GNU
+
+dom  7 mar 1999 22:18:44 Sergio Gómez (sergio@rabcee02.uco.es)
+
+	* Versión 0.5
+	* Corregido un error en exec.c 
+	* Corregido un error en qronos.c
+	
+sáb 20 feb 1999 03:16:40 Sergio Gómez (sergio@rabcee02.uco.es)
+
+	* Versión 0.4
+	* Incluido soporte para i18n (Ver ChangeLog de po/)
+	
+vie 19 feb 1999 00:41:17 Sergio Gómez (sergio@rabcee02.uco.es)
+
+	* Versión 0.3
+	* Eliminación de la estructura stuff
+	* Incorporación de msg.c y msg.h para el empaquetado de mensajes
+	* Modificación de call_qronosd para que se envíe texto en vez de 
+	  estructuras de datos
+
+	
+jue 18 feb 1999 00:29:15 Sergio Gómez (sergio@rabcee02.uco.es)
+
+	* Versión 0.2
+	* Corregido un posible error de 'race condition' en exec.c. 
+	* Ahora los enlaces se crean/ejecutan en un directorio temporal
+
+lun 15 feb 1999 02:48:28 Sergio Gómez (sergio@rabcee02.uco.es)
+	
+	* Versión inicial 0.1
+

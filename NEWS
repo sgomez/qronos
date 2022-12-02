@@ -1,0 +1,23 @@
+Versión 0.5
+
+Corregidos un par de errores menores.
+
+Versión 0.4
+
+Los mensajes por defecto se muestran ahora en inglés, necesitando configurar
+la variable de entorno LC_ALL (v.g.) para que los mensajes aparezcan en
+español.
+
+Versión 0.3
+
+Modificación de la capa de comunicaciones.
+Creación de la librería libmsg.a para el enpaquetado/desempaquetado de 
+mensajes.
+
+Versión 0.2
+
+Corregidos errores en exec.c.
+
+Versión 0.1
+
+Versión inicial, sólo se incluye el cliente y el logotipo del programa.

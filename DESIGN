@@ -1,0 +1,419 @@
+/**********
+qronos_auth
+***********
+   Creador: Sergio Gomez <sergio@rabcee02.uco.es>
+   Fecha creación: lun, 15 feb 1999 00:20:50 +0100
+   Ultima modificación:
+   Versión 1.0a
+
+   Apoyo:   Naiden :)
+   Función: Esta función indica si se tiene autorización o no para ejecutar
+	    el programa pasado como parámetros (estructura program, véase
+	    qronos.h)
+   Variables de entrada:
+       struct program *foo
+         Puntero a una estructura de tipo program. Si se tiene autorización
+	 para ejecutar un programa, esta variable se actualizará.
+   Valor que devuelve:
+       (int)
+	 AUTH_OK si tiene permisos
+	 AUTH_SERVER_ERROR si no se pudo conectar con el servidor
+	 AUTH_NO_TIME si se le acabó la quota
+	 AUTH_NO_AUTH si no tiene autorización
+   Todo:
+   * Comprobar que no hay errores
+*/
+
+/**********
+qronos_close
+***********
+   Creador: Sergio Gomez <sergio@rabcee02.uco.es>
+   Fecha creación: lun, 15 feb 1999 00:20:50 +0100
+   Ultima modificación:
+   Versión 1.0a
+
+   Apoyo:   Naiden :)
+   Función: Esta función indica al servidor que la ejecución de un programa
+	    ha finalizado
+   Variables de entrada:
+       struct program *foo
+         Puntero a una estructura de tipo program.
+   Valor que devuelve:
+	(void) 
+           ninguno
+   Todo:
+   * Comprobar que no hay errores
+*/
+
+/**********
+call_qronosd
+***********
+   Creador: Sergio Gomez <sergio@rabcee02.uco.es>
+   Fecha creación: lun, 15 feb 1999 00:20:50 +0100
+   Ultima modificación:
+   Versión 1.0a
+
+   Apoyo:   Naiden :)
+   Función: Función que se comunica con el servidor y le solicita 
+	    información acerca de los permisos del usuario que ejecuta
+	    el programa.
+	    Esta función tiene caracter privado y sólo debe ser llamada
+            por otras funciones
+   Variables de entrada:
+       struct stuff *tosend
+         Puntero a una estructura de tipo stuff. Esta variable se actualizará
+	 con los valores devueltos por el servidor
+   Valor que devuelve:
+       (int)
+	 COMM_OK si no hubo errores
+	 COMM_XXXX_ERROR si hubo algún tipo de error (ver auth.h)
+   Todo:
+   * Comprobar que no hay errores, sobre todo si el servidor falla, etc.
+*/
+
+/********
+Fichero ---> exec.c
+*********
+Contiene las funciones necesarias para ejecutar un programa una determinada
+cantidad de tiempo. Tanto el programa a ejecutar como el tiempo se reciben
+por parámetros.
+
+Funciones publicas:
+  qronos_exec
+Funciones privadas:
+  cucu
+
+Requisitos:
+===========
+La función que llame a qronos_exec debe tener como SUID al usuario
+definido en la macro QRONOS (por defecto qronos, ver exec.h)
+Los programas originales deben estar en la ruta marcada por la macro.
+PATH_QRONOS (por defecto /usr/local/lib/qronos, ver exec.h). 
+Dicho directorio contendrá dos subdirectorios:
+* bin: accesible sólo para qronos, contiene los ejecutables
+* tmp: accesible para ejecución para todos, contiene los enlaces a los 
+       ejecutables qronos debe poder escribir
+
+Efectos laterales:
+==================
+Al salir de qronos_exec el programa pasa a ejecutarse con el UID y el SUID
+de QRONOS. Por lo que cualquier operación que se realice a posteriori
+se hará con esos valores. No se recuperará el UID del usuario hasta
+que no se salga del programa.
+Esto se ha hecho así para prevenir la señal KILL por parte del usuario.
+Además permitirá que las desconexiones sólo las hagan los clientes (!!!),
+ya que identd no identificará al usuario sino a qronos (ver qronos_finalice
+cuando este construido).
+
+Inconvenientes:
+===============
+Los procesos aparecen en la tabla con qronos como padre del proceso.
+Afortunadamente no es fácil de ver.
+*/
+
+
+/********** 
+qronos_exec
+***********
+   Creador: Sergio Gomez <sergio@rabcee02.uco.es>
+   Fecha creación: mié dic 23 16:17:05 UTC 1998 
+   Ultima modificación: jue, 18 feb 1999 00:15:01 +0100
+   Versión 1.2a
+
+   Apoyo:   Peibol <peibol@rabcee02.uco.es> (mas quisiera -> i62allep@uco.es)
+   Funcion: Ejecuta un programa durante un periodo determinado de tiempo
+   Variables de entrada/salida:
+     struct program *foo
+       Puntero a una estructura program (ver qronos.h)
+   Valor que devuelve:
+     (int)
+       =0 en caso de exito
+       <>0 en caso contrario (ver exec.h)
+
+
+   Todo:
+   * Comprobar que no se producen errores por desbordamiento
+   * Comprobar que se recogen todos los posibles errores externos
+   * Comprobar que no existe el enlace y esperar si eso sucede
+     como solución para prox. versiones, crear subdirectorios con nombres
+     aleatorios, lo cual previene ejecuciones aleatorias
+*/
+
+/********** 
+cucu
+***********
+   Creador: Sergio Gomez <sergio@rabcee02.uco.es>
+   Fecha creación: mié dic 23 16:17:05 UTC 1998 
+   Ultima modificación:
+   Versión 1.0a
+
+   Apoyo:   Naiden :)
+   Funcion: Se encarga de controlar que no nos pasemos de tiempo. Esta funcion
+            es llamada cada TICTAC (ver exec.h) segundos por SIGALRM.
+   Variables globales:
+     int pid
+       pid del proceso hijo
+     quota_t counter
+       Informacion del limite de tiempo para la ''ejecucion'' 8)
+   Variables de entrada:
+       none
+   Valor que devuelve:
+       none
+
+   Todo:
+   * Comprobar que su quota de tiempo se ha renovado (hecho)
+*/
+
+
+
+
+------------------------------------------------------------------------------
+
+El cliente está acabado prácticamente, con lo que implica empezar
+la casa por el tejado, es decir, será el servidor el que se ajuste al cliente.
+
+Las estructuras han sido modificadas de la siguiente forma:
+
+-----------------
+fichero qronos.h
+-----------------
+
+#if !defined(QRONOS_H)
+#define QRONOS_H
+
+#include <time.h>
+
+typedef struct {
+  time_t time;        /* tiempo de ejecucion restante */
+  time_t renove;      /* tiempo que queda para la renovacion */
+  time_t quota;       /* quota para ese programa */
+  time_t interval;    /* intervalo entre quotas */
+} qronos_t;
+
+typedef struct {
+  union tipo_datos {
+    char prog[255];      /* El ejecutable que queremos (argv[0]) */
+    qronos_t timeleft;   /* El tiempo consumido */
+  } data;
+  int id;                /* Identificador de petición */
+} stuff;
+
+typedef struct {
+  char **argv;        /* Programa a ejecutar */
+  int argc;
+  int id;             /* Identificador */
+  qronos_t timeleft;  /* Informacion de la cuota temporal del programa*/
+} program;
+
+#endif
+
+
+/**************ELIMINADA************
+typedef struct {
+  int id;            /* Identificador de petición 
+  qronos_t timeleft; /* Numero de segundos maximo que nos queda 
+} okko;
+***********************************/
+
+------------
+fin
+------------
+
+La estructura okko ha desaparecido, para todo tipo de comunicacion
+se usara la estructura stuff (que tambien ha sido modificada).
+
+La razon de que stuff este así es para permitir, con la misma estructura,
+enviar diferentes mensajes, pero el modulo de envio !!!ni se entera!!!
+por que esta enviando uniones, seran los de lectura los que
+sepan que leer en cada momento, y asi nos ahorramos tener
+que poner codigo para enviar/recibir distintas cosas.
+
+Hay dos tipos de mensajes, que son enviados por stuff:
+a) de peticion de permiso o consulta de un programa
+Enviará:
+	datos.prog	: nombre del programa
+	id		: tipo de peticion (consulta o permiso)
+Recibira:
+	datos.timeleft	: tiempo y permisos
+	id		: su identificador para luego poder cerrar
+
+b) de informe sobre final de ejecucion
+Enviará:
+	datos.timeleft	: tiempo sobrante
+	id		: id del proceso finalizado (los id son unicos)
+
+Eso en cuanto a la estructura stuff, en cuanto a qronos_t tiene cuatro campos
+
+time -> El tiempo en seg durante el cual se puede ejecutar el comando
+	 >0 tiene quota
+	 =0 no tiene permisos
+	 <0 quota ilimitada
+renove -> Tiempo que queda para que pueda renovarse la quota
+quota  -> Cuando se renueve la quota se hara a este valor
+interval -> Intervalo entre renovación de quotas
+
+
+Esto es para el caso siguiente, si tengo de uso 10m de cada 15:
+hora-inicio	hora-fin	min. usados	min. restantes
+  10:00		 10:08		     8		      2
+  10:14		 10:18		     4		      7
+
+¿Por que no se interrumpió el programa a las 10:16 si sólo le quedaban
+dos minutos?
+
+Muy sencillo, a las 10:15 debe renovarse su quota por que empezo a las 10:00.
+Pero fijaos que el minuto que no aprobechó no lo recupera despues, desde las
+10:15 hasta las 10:18 van 3 minutos, por eso le quedan sólo 7.
+
+La estructura 'program' es fundamental, ya que es la que se va 'paseando por la
+estructura del programa'. Contiene la linea de argumentos, la id y la quota de tiempo.
+
+El diseño del cliente consta de tres funciones ''publicas'' que se recorren
+en cascada, el resto de las funciones se consideran 'privadas':
+
+qronos_auth	---->	qronos_exec	---->	qronos_close
+===========             ===========             ============
+comprueba los		ejecuta el		indica al servidor
+permisos		programa		el tiempo consumido
+
+Esquema:
+1.- Crear una estructura program y rellenarla con los datos conocidos (solo argv)
+2.- Se la pasa a qronos_auth el cual, si el servidor lo permite, rellena los datos que faltan: id e timeleft (dado todo por el servidor)
+3.- Si hay permisos se pasa la estructura a qronos_exec (este modulo funciona perfectamente) el cual ejecuta el programa durante el tiempo permitido.
+
+OJO!!!!Leed el codigo de este modulo (exec.c) por que esta comentado.
+Resulta que el usuario podia matar al cliente, lo cual no nos interesaba, por
+que entonces el servidor no se enteraria nunca de la desconexion, para
+evitar eso hemos puesto en un determinado momento el uid y el suid del
+usuario qronos, con lo que en ese momento no queda nada del usuario
+que ejecuto el programa. ¡Y ESTO ES IRREVERSIBLE! hasta que finalice el programa. SOLO QRONOS Y ROOT pueden matar ahora el cliente (bueno y Ctrl-C...
+que todavia no he capturado todas las señales [ver 'ToDo' de exec.c])
+
+Lo cual resulta que, por accidente (como las grandes cosas de esta vida),
+se ha solucionado otro problema de seguridad:
+
+¿Que pasa si se envia durante la ejecucion una señal al servidor de fin
+de ejecucion? (Cualquier persona que sepa el protocolo puede hacerlo)
+El usuario podria ejecutar el programa el tiempo que quisiera (eso si con 
+interrupciones cada quota de tiempo).
+
+Bien para eso pense en la clave o id, como ya le dije a Nacho en el anterior mail, pero: ¿que pasa si alguien usa un depurador o cierto comando de cuyo nombre no quiero acordarme y averigua la id mientras se envia? ¡¡¡Puede entonces hacer lo de antes impunemente!!!!!
+
+Asi que, como dije, al poner el uid y el suid de qronos se elimina todo vestigio del usuario anterior, eso significa que en la siguiente conexion al servidor (para indicar fin de conexion, modulo qronos_close) el demonio IDENT no reconoce al usuario como el que ha hecho la conexion si no >>>>>>>>>>>>>A QRONOS<<<<<<<<<<< (el usuario generico), es decir el servidor no va a saber quien es el que realiza la conexion cuando se esta enviando la notificacion de desconexion (en la de conexion si la  reconoce por que aun no hemos modificado los uid/suid), cree que es un usuario 'qronos' cuando somos nosotros.
+
+Supongo que ya habreis adivinado que esto es mas una ventaja que un 
+incoveniente ya que podemos IMPEDIR que cualquier peticion de desconexion
+que no provenga de un usuario qronos (i52gobas, i62allep, i72sagir, etc) 
+se rechacen. CON LO CUAL NINGUN USUARIO puede enviar señales de desconexion
+por que nunca seran usuarios qronos.
+¿Y como sabemos quien quiere desconectarse de que? Pues para eso
+tenemos el id, que como ya dije DEBE SER UNICO, de hecho, si os fijasteis
+en la desconexion no mando el nombre del programa, solo la id.
+
+De la desconexion se encargaría la funcion qronos_close (que será muy similar
+a qronos_auth).
+
+En rabcee02 dejo, para los que tienen permiso (lo siento, hasta que no
+os enseñe a usar el CVS no podreis entrar la mayoria), el codigo del 
+cliente hasta ahora desarrollado por mi.
+
+
+El cliente acaba de entrar en FASE DE DEPURACION !!!
+
+Bueno, queda definir el servidor, el cual esta muy chungo, sobre
+todo el fichero de configuracion (lex/yacc???) y el de registro 
+(lectores/escritores con prioridad a escritores???)
+
+Preparos para usar semáforos!!!!
+
+
+------------------------------------------------------------------------------
+
+
+Modificaciones al diseño.
+Fecha: jue, 18 feb 1999 00:15:01 +0100
+
+qronos.h queda así:
+
+#if !defined(QRONOS_H)
+#define QRONOS_H
+
+#include <time.h>
+
+typedef struct {
+    time_t time;        /* tiempo de ejecucion restante */
+    time_t renove;      /* tiempo que queda para la renovacion */
+    time_t quota;       /* quota para ese programa */
+    time_t interval;    /* intervalo entre quotas */
+} qronos_t;
+
+typedef struct {
+    union tipo_datos {
+	char prog[255];      /* El ejecutable que queremos (argv[0]) */
+	qronos_t timeleft;   /* El tiempo consumido */
+    } data;
+    int id;                /* Identificador de petición */
+} stuff;
+
+typedef struct {
+    char *prog;         /* Programa a ejecutar */    
+    char **argv;        /* Argumentos del programa */
+    int id;             /* Identificador */
+    qronos_t timeleft;  /* Informacion de la cuota temporal del programa*/
+} program;
+
+#endif
+
+
+Se ha modificado program y stuff se eliminará próximamente.
+program.prog guarda sólo el nombre del programa (sin ninguna barra '/' que pueda provocar
+un race condition).
+
+El directorio de qronos pase de tener la estructura:
+
+/usr
+   /local
+        /lib
+	   /qronos
+		 /bin (550)
+		 /lnk (771)
+A ser de la forma
+/usr
+   /local
+        /lib
+	   /qronos
+		 /bin (550)
+		 /tmp (771)
+
+
+En tmp antes de crear los enlaces se crea un directorio de nombre aleatorio
+y dentro de este se crea el enlace para impedir que alguien intente
+ejecutar por su cuenta el enlace antes de que desaparezca.
+
+Inmediatamente despues tanto el enlace como el directorio se eliminan.
+
+Stuff se eliminara en pro de una comunicación de alto nivel a través
+del paso de texto. El formato de los mensajes es:
+
+prog:id:time:renove:quota:interval
+
+id si es negativo indica algún tipo de petición (PET_AUTH o PET_TIME)
+   si es positivo es el id de algún proceso e indica que se 
+    recibe/cierra un proceso.
+
+Se va a intentar diseñar el código de forma que puede ser utilizado 
+por el cliente y el servidor.
+
+---------------------------------------
+
+Modificaciones al diseño.
+Fecha: dom,  7 mar 1999 22:18:44 +0100
+
+La estructura del subdirectorio es ahora de la forma
+/usr
+   /local
+        /lib
+	   /qronos
+		 /bin (550)
+		 /tmp (711)
+

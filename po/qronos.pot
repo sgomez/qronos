@@ -1,0 +1,62 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Free Software Foundation, Inc.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"POT-Creation-Date: 1999-04-18 17:20+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: ENCODING\n"
+
+#: qronos.c:115
+#, c-format
+msgid "Error: %s don't exist.\n"
+msgstr ""
+
+#: qronos.c:121
+#, c-format
+msgid "Error: the euid must be the %s uid.\n"
+msgstr ""
+
+#: qronos.c:133
+#, c-format
+msgid ""
+"    Qronos version %s, Copyright (C) 1999 Sergio Gómez <sergio@cartero.com>\n"
+"    Qronos comes with ABSOLUTELY NO WARRANTY; for details read the GPL.\n"
+"    This is free software, and you are welcome to redistribute it under \n"
+"    certain conditions.\n"
+"\n"
+msgstr ""
+
+#: qronos.c:143
+#, c-format
+msgid "Service unavailable, try again in %d %s.\n"
+msgstr ""
+
+#: qronos.c:143
+msgid "minutes"
+msgstr ""
+
+#: qronos.c:143
+msgid "minute"
+msgstr ""
+
+#: qronos.c:147
+msgid "Permission denied.\n"
+msgstr ""
+
+#: qronos.c:151
+msgid "Service unavailable, try again later.\n"
+msgstr ""
+
+#: qronos.c:156
+msgid ""
+"An error had been happen while executing the program. Please contact with "
+"your System Administrator.\n"
+msgstr ""

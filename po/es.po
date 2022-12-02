@@ -1,0 +1,64 @@
+# Qronos: Mensajes en español
+# Copyright (C) 1999 UCO-API (api@rabcee02.uco.es)
+# Sergio Gómez (sergio@rabcee02.uco.es), 1999.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: qronos 0.3\n"
+"POT-Creation-Date: 1999-04-18 17:20+0200\n"
+"PO-Revision-Date: 1999-02-20 02:22+01:00\n"
+"Last-Translator: Sergio Gómez <sergio@rabcee02.uco.es>\n"
+"Language-Team: UCO-API <api@rabcee02.uco.es>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Transfer-Encoding: 8-bit\n"
+
+# , c-format
+#: qronos.c:115
+msgid "Error: %s don't exist.\n"
+msgstr "Error: %s no existe.\n"
+
+# , c-format
+#: qronos.c:121
+msgid "Error: the euid must be the %s uid.\n"
+msgstr "Error: el euid debe ser el uid de %s.\n"
+
+# , c-format
+#: qronos.c:133
+msgid ""
+"    Qronos version %s, Copyright (C) 1999 Sergio Gómez <sergio@cartero.com>\n"
+"    Qronos comes with ABSOLUTELY NO WARRANTY; for details read the GPL.\n"
+"    This is free software, and you are welcome to redistribute it under \n"
+"    certain conditions.\n"
+"\n"
+msgstr ""
+"    Qronos version %s, Copyright (C) 1999 Sergio Gómez <sergio@cartero.com>\n"
+"    Qronos viene sin ningún tipo de garantía; para más detalles lea la GPL.\n"
+"    Este software es libre, y se le invita a redistriburlo bajo ciertas\n"
+"    condiciones\n"
+"\n"
+
+# , c-format
+#: qronos.c:143
+msgid "Service unavailable, try again in %d %s.\n"
+msgstr "Servicio indisponible, inténtelo dentro de %d %s.\n"
+
+#: qronos.c:143
+msgid "minutes"
+msgstr "minutos"
+
+#: qronos.c:143
+msgid "minute"
+msgstr "minuto"
+
+#: qronos.c:147
+msgid "Permission denied.\n"
+msgstr "Permiso denegado.\n"
+
+#: qronos.c:151
+msgid "Service unavailable, try again later.\n"
+msgstr "Servicio indisponible, inténtelo más tarde.\n"
+
+#: qronos.c:156
+msgid "An error had been happen while executing the program. Please contact with your System Administrator.\n"
+msgstr "Hubo un error al ejecutar el programa. Contacte con el administrador del  sistema.\n"
